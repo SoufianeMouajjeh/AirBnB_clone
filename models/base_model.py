@@ -30,7 +30,7 @@ class BaseModel:
     def __str__(self):
         """Return the print/str representation of the BaseModel instance."""
         return f"[{type(self).__name__}] ({self.id}) {self.__dict__}"
-    
+
     def save(self):
         """ update with the current datetime """
         self.updated_at = datetime.now()
@@ -42,4 +42,3 @@ class BaseModel:
         dict['created_at'] = self.created_at.isoformat()
         dict['updated_at'] = self.updated_at.isoformat()
         return dict
-    
