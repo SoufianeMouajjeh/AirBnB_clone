@@ -4,8 +4,7 @@ class FileStorage
 """
 import json
 import os
-from models.base_model import BaseModel
-
+from datetime import datetime
 
 class FileStorage:
     """
@@ -37,7 +36,22 @@ class FileStorage:
         """
         reload
         """
-        if os.path.exists(self.__file_path):
+        try:
             with open(self.__file_path, mode='r', encoding='utf-8') as f:
-                self.__objects = {k: BaseModel(**v)
-                                  for k, v in json.load(f).items()}
+                dict = json.load(f)
+                for k, v in dict.items():
+                    class_name = v["__class__"]
+                    if class_name in globals():
+                        object_class = globals()[class_name]
+                        print(object_class)
+                        del v["__class__"]
+                        object = object_class(**v)
+                        FileStorage.__objects[k] = object
+                    else:
+                        from models.base_model import BaseModel
+                        from models.user import User
+
+                        object = eval(k.split('.')[0])(**v)
+                        FileStorage.__objects[k] = object
+        except FileNotFoundError:
+            pass

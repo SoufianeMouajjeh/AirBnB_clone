@@ -4,6 +4,7 @@ Console module
 """
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
@@ -48,10 +49,10 @@ class HBNBCommand(cmd.Cmd):
         """
         if not line:
             print("** class name missing **")
-        elif line != "BaseModel":
+        elif line not in globals():
             print("** class doesn't exist **")
         else:
-            new_instance = BaseModel()
+            new_instance = globals()[line]()
             new_instance.save()
             print(new_instance.id)
 
@@ -60,34 +61,36 @@ class HBNBCommand(cmd.Cmd):
         Prints the string representation of an instance
         """
         args = line.split()
-        if not args:
+        if not line:
             print("** class name missing **")
-        elif args[0] != "BaseModel":
+        elif args[0] not in globals():
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
         else:
-            key = "{}.{}".format(args[0], args[1])
-            if key in storage.all():
-                print(storage.all()[key])
+            key = args[0] + "." + args[1]
+            all_objs = storage.all()
+            if key in all_objs:
+                print(all_objs[key])
             else:
                 print("** no instance found **")
 
     def do_destroy(self, line):
         """
-        Deletes an instance based on the class name and id
+        Deletes an instance
         """
         args = line.split()
-        if not args:
+        if not line:
             print("** class name missing **")
-        elif args[0] != "BaseModel":
+        elif args[0] not in globals():
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
         else:
-            key = "{}.{}".format(args[0], args[1])
-            if key in storage.all():
-                del storage.all()[key]
+            key = args[0] + "." + args[1]
+            all_objs = storage.all()
+            if key in all_objs:
+                del all_objs[key]
                 storage.save()
             else:
                 print("** no instance found **")
@@ -97,22 +100,24 @@ class HBNBCommand(cmd.Cmd):
         Prints all string representation of all instances
         """
         args = line.split()
-        if not args:
-            print([str(value) for value in storage.all().values()])
-        elif args[0] != "BaseModel":
+        all_objs = storage.all()
+        if not line:
+            print([str(all_objs[obj]) for obj in all_objs])
+        elif args[0] not in globals():
             print("** class doesn't exist **")
         else:
-            print([str(value) for key, value in storage.all().items()
-                   if key.split(".")[0] == args[0]])
+            print([str(all_objs[obj]) for obj in all_objs
+                   if args[0] in obj])
 
     def do_update(self, line):
         """
         Updates an instance based on the class name and id
         """
         args = line.split()
-        if not args:
+        all_objs = storage.all()
+        if not line:
             print("** class name missing **")
-        elif args[0] != "BaseModel":
+        elif args[0] not in globals():
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -121,10 +126,10 @@ class HBNBCommand(cmd.Cmd):
         elif len(args) == 3:
             print("** value missing **")
         else:
-            key = "{}.{}".format(args[0], args[1])
-            if key in storage.all():
-                setattr(storage.all()[key], args[2], args[3])
-                storage.all()[key].save()
+            key = args[0] + "." + args[1]
+            if key in all_objs:
+                setattr(all_objs[key], args[2], args[3])
+                storage.save()
             else:
                 print("** no instance found **")
 
