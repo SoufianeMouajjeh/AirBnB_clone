@@ -6,6 +6,7 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 
+
 class HBNBCommand(cmd.Cmd):
     """
     HBNBCommand class
@@ -53,7 +54,7 @@ class HBNBCommand(cmd.Cmd):
             new_instance = BaseModel()
             new_instance.save()
             print(new_instance.id)
-    
+
     def do_show(self, line):
         """
         Prints the string representation of an instance
@@ -90,7 +91,7 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
             else:
                 print("** no instance found **")
-    
+
     def do_all(self, line):
         """
         Prints all string representation of all instances
@@ -101,7 +102,8 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] != "BaseModel":
             print("** class doesn't exist **")
         else:
-            print([str(value) for key, value in storage.all().items() if key.split(".")[0] == args[0]])
+            print([str(value) for key, value in storage.all().items()
+                   if key.split(".")[0] == args[0]])
 
     def do_update(self, line):
         """
