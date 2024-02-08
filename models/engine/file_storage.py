@@ -6,6 +6,7 @@ import json
 import os
 from datetime import datetime
 
+
 class FileStorage:
     """
     class FileStorage
@@ -50,6 +51,11 @@ class FileStorage:
                     else:
                         from models.base_model import BaseModel
                         from models.user import User
+                        from models.state import State
+                        from models.city import City
+                        from models.place import Place
+                        from models.amenity import Amenity
+                        from models.review import Review
 
                         object = eval(k.split('.')[0])(**v)
                         FileStorage.__objects[k] = object

@@ -5,6 +5,11 @@ Console module
 import cmd
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 from models import storage
 
 
@@ -132,6 +137,64 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
             else:
                 print("** no instance found **")
+
+    def do_count(self, line):
+        """
+        Counts the number of instances of a class
+        """
+        args = line.split()
+        all_objs = storage.all()
+        count = 0
+        for obj in all_objs:
+            if args[0] in obj:
+                count += 1
+        print(count)
+
+    def default(self, arg):
+        '''
+        handle dynamic commands
+        using : <class name>.<method name>(<args>)
+        '''
+        try:
+            names, args = arg.strip(')').split('(')
+            class_name, method_name = names.split('.')
+            if (method_name == "count"):
+                print(self.counter(class_name))
+            else:
+                do_func = f"do_{method_name}"
+                method_name = getattr(self, do_func, None)
+                if len(args) == 0:
+                    method_name(class_name)
+                else:
+                    if do_func == "do_update":
+                        args = args.split(",", 1)
+                        key = f"{class_name}.{eval(args[0].strip())}"
+                        if "{" in args[1]:
+                            data_obj = eval(args[1])
+                            if key in storage.all():
+                                obj = storage.all()[key]
+                            else:
+                                print(f"No key found : {key}")
+                            for key, value in data_obj.items():
+                                setattr(obj, key, value)
+                                storage.save()
+                        else:
+                            args = args[1].replace('"', "").split(",")
+                            c = class_name
+                            k = key.split('.')[1]
+                            a1 = args[0].strip()
+                            a2 = args[1].strip()
+
+                            method_name(f"{c} {k} {a1} {a2}")
+                            storage.save()
+                    else:
+                        args = args.replace('"', "")
+                        args = args.replace(" ", "")
+                        args = args.replace(",", " ")
+                        args = f"{class_name} {args}"
+                        method_name(args)
+        except Exception:
+            return
 
 
 if __name__ == '__main__':
