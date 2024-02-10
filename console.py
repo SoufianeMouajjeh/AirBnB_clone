@@ -138,17 +138,14 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
-    def do_count(self, line):
-        """
-        Counts the number of instances of a class
-        """
-        args = line.split()
-        all_objs = storage.all()
+    def do_count(self, arg):
+        ''' count how many obj we have'''
         count = 0
-        for obj in all_objs:
-            if args[0] in obj:
+        for value in storage.all():
+            class_name = value.split(".")[0]
+            if class_name == arg:
                 count += 1
-        print(count)
+        return count
 
     def default(self, arg):
         '''
@@ -159,7 +156,7 @@ class HBNBCommand(cmd.Cmd):
             names, args = arg.strip(')').split('(')
             class_name, method_name = names.split('.')
             if (method_name == "count"):
-                print(self.counter(class_name))
+                print(self.do_count(class_name))
             else:
                 do_func = f"do_{method_name}"
                 method_name = getattr(self, do_func, None)
