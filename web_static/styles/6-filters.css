@@ -18,19 +18,20 @@ li {
     font-size: 16px;
     padding: 0 30px;
 }
-.amenities .popover li{
+.filters .amenities .popover li{
     padding: 0 30px;
 }
 .popover li>ul>li {
     font-size: 14px;
     padding: 0 50px;
 }
-.locations:hover .popover, 
-.amenities:hover .popover {
+.filters .locations:hover .popover, 
+.filters .amenities:hover .popover {
     display: block;
     top: 16px;
 }
-.locations, .amenities {
+.filters .locations,
+.filters .amenities {
     height: 100%;
     width: 25%;
     float: left;
