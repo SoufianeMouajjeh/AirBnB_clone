@@ -1,0 +1,29 @@
+body {
+    padding: 0;
+    margin: 0;
+    color: #484848;
+    font-size: 14px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    box-sizing: border-box;
+    background-color: white;
+
+}
+
+.container {
+    background-color: white;
+    width: 1000px;
+    margin: 30px auto;
+}
+
+@media (max-width: 932px) {
+    .container {
+        width: 768px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .container {
+        width: 376px;
+    }
+}
