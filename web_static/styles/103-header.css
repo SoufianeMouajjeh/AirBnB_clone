@@ -1,0 +1,26 @@
+header {
+    background-color: #ffffff;
+    height: 70px; width: 100%;
+    border-bottom: 1px #CCCCCC solid;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    }
+
+@media (max-width: 768px) {
+    header {
+        justify-content: center;
+        }
+}
+
+.logo {
+    padding-left: 20px;
+    height: 80%;
+    width: 100px;
+    background-image: url("../images/logo.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
